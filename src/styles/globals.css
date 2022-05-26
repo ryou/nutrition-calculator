@@ -12,6 +12,13 @@ body {
 }
 
 /**
+ * font-familyにUIフォントが使用されており、特にWindowsで見辛いのでその修正
+ */
+body {
+  font-family: sans-serif;
+}
+
+/**
  * input[type=number]のスピナーを消すためのスタイル指定
  */
 input[type='number'] {
