@@ -1,0 +1,17 @@
+{
+  "extends": ["../.eslintrc.json"],
+  "plugins": ["ban"],
+  "rules": {
+    "ban/ban": [
+      "error",
+      {
+        "name": "parseInt",
+        "message": "文字列から数値へのキャストはcastStringToNumberを使用して下さい。"
+      },
+      {
+        "name": "Number",
+        "message": "文字列から数値へのキャストはcastStringToNumberを使用して下さい。"
+      }
+    ]
+  }
+}

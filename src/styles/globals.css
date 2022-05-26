@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply h-full;
+}
+
+body {
+  @apply bg-base-200;
+  @apply min-h-full;
+}
+
+/**
+ * input[type=number]のスピナーを消すためのスタイル指定
+ */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+/**
+ * buttonタグを使うとテキストが中央寄せになってしまうので
+ */
+button {
+  text-align: start;
+}
+
+/**
+ * iOSでinputのfont-sizeが16px未満だとフォーカス時にズームされてしまうので
+ */
+.input {
+  @apply text-base;
+}

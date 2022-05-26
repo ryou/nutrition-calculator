@@ -1,0 +1,11 @@
+package-lock.json
+*.md
+node_modules/
+out/
+.*/
+
+# pathpidaが自動生成するファイル
+$path.ts
+
+# MSWがnpm install時に自動生成するファイル
+mockServiceWorker.js
