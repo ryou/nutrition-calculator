@@ -2,7 +2,7 @@ import { Head, Html, Main, NextScript } from 'next/document'
 
 export default function Document() {
   return (
-    <Html>
+    <Html lang="ja">
       <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded&display=swap"
