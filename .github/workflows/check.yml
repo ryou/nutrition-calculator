@@ -40,4 +40,5 @@ jobs:
         run: npm list
 
       - run: npm install
+      - run: npm run updatePath
       - run: npm run check

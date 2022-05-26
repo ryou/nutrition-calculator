@@ -39,3 +39,6 @@ yarn-error.log*
 
 # MSWがnpm install時に自動生成するファイル
 mockServiceWorker.js
+
+# pathpidaが自動生成するファイル
+$path.ts
