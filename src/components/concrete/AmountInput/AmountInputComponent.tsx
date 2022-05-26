@@ -19,7 +19,16 @@ export const AmountInputComponent = React.forwardRef<HTMLInputElement, Props>(
       const convertedValue = replaceFullWidthToHalfWidthAscii(
         event.target.value
       )
-      // TODO: ここの!は大丈夫？
+
+      /**
+       * TODO: 「DOMが描画された段階でcurrentはnullじゃなくなるので、onBlurコールバックではcurrentをnot nullとみなしていい」
+       *  という理由で「!」を使用しているが、ドキュメントなどの明確な根拠がない。
+       *  useEffect(() => {
+       *    console.log(inputRef.current)
+       *  }, [inputRef])
+       *  こんな感じのuseEffectで確認したら一発目から非nullだったので、認識はあっているはずだがもっとドキュメントやソースレベルでの
+       *  根拠が欲しいので、調べる。
+       */
       inputRef.current!.value = `${convertedValue}`
 
       if (props.onBlur !== undefined) {
