@@ -6,13 +6,22 @@ import { useDebounce } from 'use-debounce'
 import { Foodstuff } from '../../../types/foodstuff'
 import { HeadingComponent } from '../../abstract/Heading/HeadingComponent'
 import { calcNutritionFromAmount } from '../../../services/NutritionService'
+import { castStringToNumber } from '../../../libs/castStringToNumber'
 
 type Props = {
   foodstuff: Foodstuff
 }
 export const FoodstuffDetailComponent = ({ foodstuff }: Props) => {
   const unitAmount = foodstuff.unit.amount
-  const [amount, setAmount] = useState(unitAmount)
+  const [amountString, setAmountString] = useState(`${unitAmount}`)
+  const amount = useMemo(() => {
+    const result = castStringToNumber(amountString)
+    if (result.isFailure()) {
+      return 0
+    }
+
+    return result.value
+  }, [amountString])
   const [debouncedAmount] = useDebounce(amount, 500)
 
   const actualNutrition = useMemo(
@@ -36,8 +45,8 @@ export const FoodstuffDetailComponent = ({ foodstuff }: Props) => {
       </div>
       <div className="text-sm mt-4">
         <AmountInputComponent
-          value={amount}
-          onChange={(event) => setAmount(event.target.valueAsNumber)}
+          value={amountString}
+          onChange={(event) => setAmountString(event.target.value)}
         />
         あたりの栄養量
       </div>
