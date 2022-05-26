@@ -10,7 +10,6 @@ type SpecificProps = {
 type Props = TextInputComponentProps & SpecificProps
 export const LabeledTextInputComponent = React.forwardRef<
   HTMLInputElement,
-  // TODO: このPropsの指定が必要な理由調べる
   Props
 >(function TextInputWithLabelComponent(
   { label, labelPosition = 'right', ...props }: Props,
