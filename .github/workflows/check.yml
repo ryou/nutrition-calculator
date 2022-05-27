@@ -1,9 +1,6 @@
 name: Check
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     types: [opened, reopened]
 
@@ -40,4 +37,5 @@ jobs:
         run: npm list
 
       - run: npm install
+      - run: npm run updatePath
       - run: npm run check

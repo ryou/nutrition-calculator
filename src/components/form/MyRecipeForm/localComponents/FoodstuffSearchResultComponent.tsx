@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import classNames from 'classnames'
 import { ButtonComponent } from '../../../abstract/Button/ButtonComponent'
-import { AmountInputComponent } from '../../../concrete/AmountInput/AmountInputComponent'
 import { FoodstuffSummary } from '../../../../types/foodstuff'
 import { FoodstuffModalComponent } from '../../../concrete/FoodstuffModal/FoodstuffModalComponent'
 import { ListComponent } from '../../../abstract/List/ListComponent'
@@ -9,6 +8,7 @@ import { ListItemComponent } from '../../../abstract/List/ListItemComponent'
 import { useSearchFoodstuffs } from '../../../../hooks/foodstuff/useSearchFoodstuffs'
 import { AlertComponent } from '../../../abstract/Alert/AlertComponent'
 import { IconComponent } from '../../../abstract/Icon/IconComponent'
+import { ControlledAmountInputComponent } from '../../../concrete/AmountInput/ControlledAmountInputComponent'
 
 export const FoodstuffSearchResultComponentTestId = {
   AddButton: (id: string) => `button_add_${id}`,
@@ -52,11 +52,10 @@ const FoodstuffListItemComponent = ({
         </div>
         <div>
           <div className={classNames(['flex', 'gap-2'])}>
-            <AmountInputComponent
+            <ControlledAmountInputComponent
               value={amount}
-              onChange={(event) => setAmount(event.target.value)}
+              onValueChange={async (value) => setAmount(value)}
             />
-
             <ButtonComponent
               size={'sm'}
               onClick={_onClickAdd}

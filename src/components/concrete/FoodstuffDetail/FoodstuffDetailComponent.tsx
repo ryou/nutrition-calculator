@@ -1,18 +1,27 @@
 import { NutritionDetailComponent } from '../NutritionDetail/NutritionDetailComponent'
 import { ExternalTextLinkComponent } from '../../abstract/ExternalTextLink/ExternalTextLinkComponent'
 import { useMemo, useState } from 'react'
-import { AmountInputComponent } from '../AmountInput/AmountInputComponent'
 import { useDebounce } from 'use-debounce'
 import { Foodstuff } from '../../../types/foodstuff'
 import { HeadingComponent } from '../../abstract/Heading/HeadingComponent'
 import { calcNutritionFromAmount } from '../../../services/NutritionService'
+import { castStringToNumber } from '../../../libs/castStringToNumber'
+import { ControlledAmountInputComponent } from '../AmountInput/ControlledAmountInputComponent'
 
 type Props = {
   foodstuff: Foodstuff
 }
 export const FoodstuffDetailComponent = ({ foodstuff }: Props) => {
   const unitAmount = foodstuff.unit.amount
-  const [amount, setAmount] = useState(unitAmount)
+  const [amountString, setAmountString] = useState(`${unitAmount}`)
+  const amount = useMemo(() => {
+    const result = castStringToNumber(amountString)
+    if (result.isFailure()) {
+      return 0
+    }
+
+    return result.value
+  }, [amountString])
   const [debouncedAmount] = useDebounce(amount, 500)
 
   const actualNutrition = useMemo(
@@ -35,9 +44,9 @@ export const FoodstuffDetailComponent = ({ foodstuff }: Props) => {
         </span>
       </div>
       <div className="text-sm mt-4">
-        <AmountInputComponent
-          value={amount}
-          onChange={(event) => setAmount(event.target.valueAsNumber)}
+        <ControlledAmountInputComponent
+          value={amountString}
+          onValueChange={async (value) => setAmountString(value)}
         />
         あたりの栄養量
       </div>

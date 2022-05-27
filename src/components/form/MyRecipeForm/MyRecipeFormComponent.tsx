@@ -21,12 +21,12 @@ import { useRecipeNutrition } from '../../../hooks/recipe/useRecipeNutrition'
 import { NutritionDetailComponent } from '../../concrete/NutritionDetail/NutritionDetailComponent'
 import { MyRecipeFormSchema } from './MyRecipeFormProvider'
 import { useDebounce } from 'use-debounce'
-import { AmountInputComponent } from '../../concrete/AmountInput/AmountInputComponent'
 import { FoodstuffSummary } from '../../../types/foodstuff'
 import { HeadingComponent } from '../../abstract/Heading/HeadingComponent'
 import { ErrorMessageComponent } from '../../abstract/ErrorMessage/ErrorMessageComponent'
 import { castStringToNumber } from '../../../libs/castStringToNumber'
 import { useFormErrorMessage } from '../hooks/useFormErrorMessage'
+import { UncontrolledAmountInputComponent } from '../../concrete/AmountInput/UncontrolledAmountInputComponent'
 
 export const MyRecipeFormComponentTestId = {
   InputName: 'input_name',
@@ -101,7 +101,7 @@ const RecipeItemComponent = ({
         </div>
         <div className="flex flex-col items-end">
           <div className="flex gap-2">
-            <AmountInputComponent
+            <UncontrolledAmountInputComponent
               {...register(amountName)}
               error={!!amountErrorMessage}
             />
