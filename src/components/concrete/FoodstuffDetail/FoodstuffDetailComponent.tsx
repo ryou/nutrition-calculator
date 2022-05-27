@@ -1,12 +1,12 @@
 import { NutritionDetailComponent } from '../NutritionDetail/NutritionDetailComponent'
 import { ExternalTextLinkComponent } from '../../abstract/ExternalTextLink/ExternalTextLinkComponent'
 import { useMemo, useState } from 'react'
-import { AmountInputComponent } from '../AmountInput/AmountInputComponent'
 import { useDebounce } from 'use-debounce'
 import { Foodstuff } from '../../../types/foodstuff'
 import { HeadingComponent } from '../../abstract/Heading/HeadingComponent'
 import { calcNutritionFromAmount } from '../../../services/NutritionService'
 import { castStringToNumber } from '../../../libs/castStringToNumber'
+import { ControlledAmountInputComponent } from '../AmountInput/ControlledAmountInputComponent'
 
 type Props = {
   foodstuff: Foodstuff
@@ -44,9 +44,9 @@ export const FoodstuffDetailComponent = ({ foodstuff }: Props) => {
         </span>
       </div>
       <div className="text-sm mt-4">
-        <AmountInputComponent
+        <ControlledAmountInputComponent
           value={amountString}
-          onChange={(event) => setAmountString(event.target.value)}
+          onValueChange={async (value) => setAmountString(value)}
         />
         あたりの栄養量
       </div>

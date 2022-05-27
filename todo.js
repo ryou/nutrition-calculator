@@ -8,6 +8,8 @@
  *  => 制御コンポーネント、非制御コンポーネントそれぞれに対応出来る入力制御方法を考える必要がある
  *     （いっそ、制御コンポーネントと非制御コンポーネントでコンポーネント自体を分けるのも可）
  */
+// TODO: AmountInputComponentの削除
+// TODO: 追加したControlled/Uncontrolled系のコンポーネントをStorybookに追加
 // TODO: 食材増やしたい
 // TODO: jestでテスト時に、 `window.scrollTo not implemented` なエラーが出るのの解消
 // TODO: トップページに簡単な説明だけ入れておく
