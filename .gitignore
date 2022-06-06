@@ -37,8 +37,5 @@ yarn-error.log*
 # editor configration
 .idea/
 
-# MSWがnpm install時に自動生成するファイル
-mockServiceWorker.js
-
-# pathpidaが自動生成するファイル
-$path.ts
+# storybookのビルド成果物
+storybook-static
