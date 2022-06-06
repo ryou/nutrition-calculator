@@ -13,7 +13,7 @@
     "build": "run-s updatePath build:next build:export",
     "start": "next start",
     "storybook": "start-storybook -s public -p 6006",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -s public",
     "typecheck": "tsc --noEmit",
     "lint:eslint": "next lint",
     "lint:format": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx,css}\"",
