@@ -40,7 +40,11 @@ jobs:
         run: npm list
 
       - run: npm install
+
       - run: npm run build
+
+      - name: 差分が発生していないかチェック
+        run: test -z "$(git status -s)"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
