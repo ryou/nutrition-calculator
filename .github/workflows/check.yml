@@ -37,5 +37,10 @@ jobs:
         run: npm list
 
       - run: npm install
+
       - run: npm run updatePath
+
       - run: npm run check
+
+      - name: 差分が発生していないかチェック
+        run: test -z "$(git status -s)"
