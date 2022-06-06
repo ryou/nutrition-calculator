@@ -1,5 +1,8 @@
 # 栄養計算機
 
+[アプリ](https://ryou.github.io/nutrition-calculator/)
+
+[Storybook](https://stately-souffle-c40976.netlify.app/)
 
 ## 概要
 
