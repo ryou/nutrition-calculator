@@ -34,7 +34,7 @@ const FormContentComponent = ({ id }: { id: string }) => {
       return updateMyRecipe(convertResult.value)
     },
     onSuccess: async () => {
-      await router.push(pagesPath.my_recipe.$url())
+      await router.push(pagesPath.$url())
     },
     useFormReturn,
   })

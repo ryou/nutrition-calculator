@@ -26,7 +26,7 @@ const Content = () => {
       return addMyRecipe(convertResult.value)
     },
     onSuccess: async () => {
-      await router.push(pagesPath.my_recipe.$url())
+      await router.push(pagesPath.$url())
     },
     useFormReturn,
   })
