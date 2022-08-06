@@ -7,8 +7,7 @@ export const pagesPath = {
     },
     "detail": {
       $url: (url: { query: Query0, hash?: string }) => ({ pathname: '/my_recipe/detail' as const, query: url.query, hash: url.hash })
-    },
-    $url: (url?: { hash?: string }) => ({ pathname: '/my_recipe' as const, hash: url?.hash })
+    }
   },
   $url: (url?: { hash?: string }) => ({ pathname: '/' as const, hash: url?.hash })
 }
