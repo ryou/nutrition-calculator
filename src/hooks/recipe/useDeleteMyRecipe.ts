@@ -5,25 +5,26 @@ import { Result } from '../../../shared/types/Result'
 import { HttpError } from '../../libs/errors/HttpError'
 import { RecipeRepository } from '../../repositories/RecipeRepository'
 
-export const useDeleteMyRecipe: (
-  id: string,
-  params?: { invalidateOnSuccess?: boolean }
-) => () => Promise<Result<void, HttpError>> = (
-  id,
+export const useDeleteMyRecipe: (params?: {
+  invalidateOnSuccess?: boolean
+}) => (id: string) => Promise<Result<void, HttpError>> = (
   { invalidateOnSuccess } = { invalidateOnSuccess: false }
 ) => {
   const queryClient = useQueryClient()
-  return useCallback(async () => {
-    const result = await RecipeRepository.delete(id)
+  return useCallback(
+    async (id: string) => {
+      const result = await RecipeRepository.delete(id)
 
-    if (result.isFailure()) {
+      if (result.isFailure()) {
+        return result
+      }
+
+      if (invalidateOnSuccess) {
+        await queryClient.invalidateQueries(PRIMARY_QUERY_KEY.MY_RECIPES)
+      }
+
       return result
-    }
-
-    if (invalidateOnSuccess) {
-      await queryClient.invalidateQueries(PRIMARY_QUERY_KEY.MY_RECIPES)
-    }
-
-    return result
-  }, [id, invalidateOnSuccess, queryClient])
+    },
+    [invalidateOnSuccess, queryClient]
+  )
 }
