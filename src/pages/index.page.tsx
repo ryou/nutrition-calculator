@@ -11,9 +11,7 @@ import { AlertComponent } from '../components/abstract/Alert/AlertComponent'
 import { MainLayoutComponent } from '../components/abstract/MainLayout/MainLayoutComponent'
 
 const MyRecipeList = ({ myRecipes }: { myRecipes: RecipeSummary[] }) => {
-  const deleteMyRecipe = useDeleteMyRecipe({
-    invalidateOnSuccess: true,
-  })
+  const deleteMyRecipe = useDeleteMyRecipe()
 
   const handleClickDelete = useCallback(
     async (id: string) => {

@@ -19,7 +19,7 @@ import {
 
 const FormContentComponent = ({ id }: { id: string }) => {
   const router = useRouter()
-  const updateMyRecipe = useUpdateMyRecipe(id)
+  const updateMyRecipe = useUpdateMyRecipe()
   const useFormReturn = useMyRecipeFormContext()
   const { topErrorMessage, onSubmit } = useNetworkFormSubmit({
     execFunc: (data) => {
@@ -31,7 +31,7 @@ const FormContentComponent = ({ id }: { id: string }) => {
         throw convertResult.error
       }
 
-      return updateMyRecipe(convertResult.value)
+      return updateMyRecipe(id, convertResult.value)
     },
     onSuccess: async () => {
       await router.push(pagesPath.$url())

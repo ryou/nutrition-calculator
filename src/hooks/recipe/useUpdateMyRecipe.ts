@@ -6,28 +6,25 @@ import { HttpError } from '../../libs/errors/HttpError'
 import { RecipeRepository } from '../../repositories/RecipeRepository'
 import { RecipeData } from '../../types/recipe'
 
-export const useUpdateMyRecipe: (
+type UseUpdateMyRecipe = () => (
   id: string,
-  params?: { invalidateOnSuccess?: boolean }
-) => (data: RecipeData) => Promise<Result<void, HttpError>> = (
-  id,
-  { invalidateOnSuccess } = { invalidateOnSuccess: false }
-) => {
+  data: RecipeData
+) => Promise<Result<void, HttpError>>
+export const useUpdateMyRecipe: UseUpdateMyRecipe = () => {
   const queryClient = useQueryClient()
+
   return useCallback(
-    async (data: RecipeData) => {
+    async (id: string, data: RecipeData) => {
       const result = await RecipeRepository.update(id, data)
 
       if (result.isFailure()) {
         return result
       }
 
-      if (invalidateOnSuccess) {
-        await queryClient.invalidateQueries(PRIMARY_QUERY_KEY.MY_RECIPES)
-      }
+      await queryClient.invalidateQueries(PRIMARY_QUERY_KEY.MY_RECIPES)
 
       return result
     },
-    [id, invalidateOnSuccess, queryClient]
+    [queryClient]
   )
 }

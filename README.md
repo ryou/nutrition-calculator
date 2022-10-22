@@ -120,7 +120,5 @@ Myレシピデータは以下の特徴が有る。
 - refetchOnMountのみonにする
 - staleとcacheは200ミリ秒に設定
   - MyRecipeに対するuseQueryが同時に発生した際のリクエストを減らせるので。
-- invalidateOnSuccessのようなフラグを用意し、それがonなら処理終了時にinvalidateするようにする。
-  - 一覧画面上で削除とかする場合、このフラグが無いと画面が更新されないので。
 
 とする。
