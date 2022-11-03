@@ -65,7 +65,7 @@ const parse = (foodstuffInputs: FoodstuffInput[]): Foodstuff[] => {
         k: nutrition.mineral.potassium * 1000,
         ca: nutrition.mineral.calcium * 1000,
         mg: nutrition.mineral.magnesium * 1000,
-        phosphorus: nutrition.mineral.potassium * 1000,
+        phosphorus: nutrition.mineral.phosphorous * 1000,
         iron: nutrition.mineral.iron * 1000,
         zn: nutrition.mineral.zinc * 1000,
         copper: nutrition.mineral.copper * 1000,
