@@ -78,11 +78,8 @@ const vitaminNutrients: Nutrient[] = [
   'vitamin_k',
   'vitamin_b1',
   'vitamin_b2',
-  'niacin',
   'vitamin_b6',
   'vitamin_b12',
-  'folic_acid',
-  'pantothenic_acid',
   'vitamin_c',
 ]
 const mineralNutrients: Nutrient[] = [
