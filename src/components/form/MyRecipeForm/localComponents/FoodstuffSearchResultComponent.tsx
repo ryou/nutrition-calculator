@@ -19,12 +19,12 @@ const FoodstuffListItemComponent = ({
   onClickAdd,
 }: {
   foodstuff: FoodstuffSummary
-  onClickAdd: (foodstuff: FoodstuffSummary, amount: string) => void
+  onClickAdd: (foodstuffId: string, amount: string) => void
 }) => {
   const [amount, setAmount] = useState(`${foodstuff.unit.amount}`)
 
   const _onClickAdd = useCallback(() => {
-    onClickAdd(foodstuff, amount)
+    onClickAdd(foodstuff.id, amount)
   }, [foodstuff, onClickAdd, amount])
 
   const [modalIsVisible, setModalIsVisible] = useState(false)
@@ -83,7 +83,7 @@ const FoodstuffListComponent = ({
   onClickAdd,
 }: {
   items: FoodstuffSummary[]
-  onClickAdd: (foodstuff: FoodstuffSummary, amount: string) => void
+  onClickAdd: (foodstuffId: string, amount: string) => void
 }) => {
   return (
     <ListComponent>
@@ -120,7 +120,7 @@ export const FoodstuffSearchResultComponent = ({
   onClickBack,
 }: {
   keyword: string
-  onClickAdd: (foodstuff: FoodstuffSummary, amount: string) => void
+  onClickAdd: (foodstuffId: string, amount: string) => void
   onClickBack: () => void
 }) => {
   const { data, isError } = useSearchFoodstuffs(keyword)

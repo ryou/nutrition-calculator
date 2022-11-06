@@ -10,14 +10,7 @@ const myRecipeFormSchema = z.object({
   name: ZodFormSchema.getInputSchema({ required: true }),
   items: z.array(
     z.object({
-      foodstuff: z.object({
-        id: z.string(),
-        name: z.string(),
-        unit: z.object({
-          text: z.string().optional(),
-          amount: z.number(),
-        }),
-      }),
+      foodstuffId: z.string(),
       amount: ZodFormSchema.getNumberInputSchema({
         min: ApiRequestBody.RECIPE_FOODSTUFF_AMOUNT_MIN,
         max: ApiRequestBody.RECIPE_FOODSTUFF_AMOUNT_MAX,

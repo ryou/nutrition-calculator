@@ -171,9 +171,7 @@ test('食材を削除して登録した際に、削除されたことが反映�
       items: [
         {
           amount: '100',
-          foodstuff: {
-            ...food01,
-          },
+          foodstuffId: food01.id,
         },
       ],
     },

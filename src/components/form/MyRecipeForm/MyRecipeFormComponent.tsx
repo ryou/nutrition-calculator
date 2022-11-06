@@ -12,7 +12,13 @@ import { AlertComponent } from '../../abstract/Alert/AlertComponent'
 import classNames from 'classnames'
 import { IconComponent } from '../../abstract/Icon/IconComponent'
 import { FoodstuffSearchResultComponent } from './localComponents/FoodstuffSearchResultComponent'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { SearchFormComponent } from '../../concrete/SearchForm/SearchFormComponent'
 import { FoodstuffModalComponent } from '../../concrete/FoodstuffModal/FoodstuffModalComponent'
 import { ListComponent } from '../../abstract/List/ListComponent'
@@ -27,6 +33,7 @@ import { ErrorMessageComponent } from '../../abstract/ErrorMessage/ErrorMessageC
 import { castStringToNumber } from '../../../libs/castStringToNumber'
 import { useFormErrorMessage } from '../hooks/useFormErrorMessage'
 import { UncontrolledAmountInputComponent } from '../../concrete/AmountInput/UncontrolledAmountInputComponent'
+import { useFindFoodstuff } from '../../../hooks/foodstuff/useFindFoodstuff'
 
 export const MyRecipeFormComponentTestId = {
   InputName: 'input_name',
@@ -35,7 +42,7 @@ export const MyRecipeFormComponentTestId = {
   DeleteButton: (index: number) => `button_delete_${index}`,
 }
 
-type RecipeItemFields = FieldArrayWithId<MyRecipeFormSchema, 'items'>[]
+type RecipeItemField = FieldArrayWithId<MyRecipeFormSchema, 'items'>
 
 const useEditorMode = () => {
   const [mode, setMode] = useState<'recipe' | 'search'>('recipe')
@@ -128,31 +135,38 @@ const RecipeItemComponent = ({
   )
 }
 
-const RecipeItemListComponent = ({
-  recipeItemFields,
-  onClickDelete,
-}: {
-  recipeItemFields: RecipeItemFields
-  onClickDelete: (index: number) => Promise<void>
-}) => {
-  const _onClickDelete = useCallback(
-    async (index: number) => {
-      await onClickDelete(index)
-    },
-    [onClickDelete]
-  )
+const RecipeItemContainerComponent = ({
+  foodstuffId,
+  ...rest
+}: { foodstuffId: string } & Omit<
+  React.ComponentProps<typeof RecipeItemComponent>,
+  'foodstuff'
+>) => {
+  const { data, isError } = useFindFoodstuff(foodstuffId)
 
+  return isError ? (
+    <ErrorMessageComponent message="食材データ取得エラー" />
+  ) : data === undefined ? (
+    <div />
+  ) : (
+    <RecipeItemComponent foodstuff={data} {...rest} />
+  )
+}
+
+const RecipeItemListComponent = ({
+  children,
+  recipeItemFields,
+}: {
+  children: (field: RecipeItemField, index: number) => ReactNode
+  recipeItemFields: RecipeItemField[]
+}) => {
   return (
     <>
       {recipeItemFields.length > 0 ? (
         <ListComponent>
           {recipeItemFields.map((field, index) => (
             <ListItemComponent key={field.id}>
-              <RecipeItemComponent
-                index={index}
-                foodstuff={field.foodstuff}
-                onClickDelete={() => _onClickDelete(index)}
-              />
+              {children(field, index)}
             </ListItemComponent>
           ))}
         </ListComponent>
@@ -200,7 +214,7 @@ const RecipeNutritionContainerComponent = React.memo(
           : 0
 
         return {
-          foodstuffId: field.foodstuff.id,
+          foodstuffId: field.foodstuffId,
           amount,
         }
       })
@@ -221,7 +235,7 @@ export const MyRecipeEditorComponent = ({
   onClickDelete,
   onClickSearch,
 }: {
-  recipeItemFields: RecipeItemFields
+  recipeItemFields: RecipeItemField[]
   onClickDelete: (index: number) => Promise<void>
   onClickSearch: (keyword: string) => void
 }) => {
@@ -253,10 +267,15 @@ export const MyRecipeEditorComponent = ({
             <HeadingComponent size={'subsub'}>使用食材</HeadingComponent>
           </div>
           <div>
-            <RecipeItemListComponent
-              recipeItemFields={recipeItemFields}
-              onClickDelete={onClickDelete}
-            />
+            <RecipeItemListComponent recipeItemFields={recipeItemFields}>
+              {(field, index) => (
+                <RecipeItemContainerComponent
+                  foodstuffId={field.foodstuffId}
+                  index={index}
+                  onClickDelete={() => onClickDelete(index)}
+                />
+              )}
+            </RecipeItemListComponent>
           </div>
           <div className="mt-4">
             <SearchFormComponent
@@ -300,10 +319,10 @@ export const MyRecipeFormComponent = ({
     useEditorMode()
 
   const onClickAdd = useCallback(
-    (foodstuff: FoodstuffSummary, amount: string) => {
+    (foodstuffId: string, amount: string) => {
       append(
         {
-          foodstuff,
+          foodstuffId,
           amount,
         },
         // 検索画面から量を指定して追加するというUIの場合、追加時に自動でフォーカスされることにメリットがなく、
