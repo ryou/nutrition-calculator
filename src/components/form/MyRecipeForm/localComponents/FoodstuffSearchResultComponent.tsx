@@ -8,11 +8,26 @@ import { ListItemComponent } from '../../../abstract/List/ListItemComponent'
 import { useSearchFoodstuffs } from '../../../../hooks/foodstuff/useSearchFoodstuffs'
 import { AlertComponent } from '../../../abstract/Alert/AlertComponent'
 import { IconComponent } from '../../../abstract/Icon/IconComponent'
-import { ControlledAmountInputComponent } from '../../../concrete/AmountInput/ControlledAmountInputComponent'
+import { UncontrolledAmountInputComponent } from '../../../concrete/AmountInput/UncontrolledAmountInputComponent'
+import { ZodFormSchema } from '../../../../libs/ZodFormSchema'
+import * as z from 'zod'
+import { ApiRequestBody } from '../../../../../shared/types/ApiRequestBody'
+import { useDefaultForm } from '../../hooks/useDefaultForm'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useFormErrorMessage } from '../../hooks/useFormErrorMessage'
+import { ErrorMessageComponent } from '../../../abstract/ErrorMessage/ErrorMessageComponent'
 
 export const FoodstuffSearchResultComponentTestId = {
   AddButton: (id: string) => `button_add_${id}`,
 }
+
+const foodstuffListItemFormSchema = z.object({
+  amount: ZodFormSchema.getNumberInputSchema({
+    min: ApiRequestBody.RECIPE_FOODSTUFF_AMOUNT_MIN,
+    max: ApiRequestBody.RECIPE_FOODSTUFF_AMOUNT_MAX,
+  }),
+})
+type FoodstuffListItemFormSchema = z.infer<typeof foodstuffListItemFormSchema>
 
 const FoodstuffListItemComponent = ({
   foodstuff,
@@ -21,11 +36,19 @@ const FoodstuffListItemComponent = ({
   foodstuff: FoodstuffSummary
   onClickAdd: (foodstuffId: string, amount: string) => void
 }) => {
-  const [amount, setAmount] = useState(`${foodstuff.unit.amount}`)
-
-  const _onClickAdd = useCallback(() => {
-    onClickAdd(foodstuff.id, amount)
-  }, [foodstuff, onClickAdd, amount])
+  const useFormReturn = useDefaultForm<FoodstuffListItemFormSchema>(
+    {
+      amount: String(foodstuff.unit.amount),
+    },
+    zodResolver(foodstuffListItemFormSchema)
+  )
+  const onSubmit = useCallback(
+    (data: FoodstuffListItemFormSchema) => {
+      onClickAdd(foodstuff.id, data.amount)
+    },
+    [onClickAdd, foodstuff.id]
+  )
+  const amountErrorMessage = useFormErrorMessage('amount', useFormReturn)
 
   const [modalIsVisible, setModalIsVisible] = useState(false)
 
@@ -51,21 +74,25 @@ const FoodstuffListItemComponent = ({
           )}
         </div>
         <div>
-          <div className={classNames(['flex', 'gap-2'])}>
-            <ControlledAmountInputComponent
-              value={amount}
-              onValueChange={async (value) => setAmount(value)}
+          <form
+            onSubmit={useFormReturn.handleSubmit(onSubmit)}
+            className={classNames(['flex', 'gap-2'])}
+          >
+            <UncontrolledAmountInputComponent
+              {...useFormReturn.register('amount')}
+              error={!!amountErrorMessage}
             />
             <ButtonComponent
-              size={'sm'}
-              onClick={_onClickAdd}
+              size="sm"
+              type="submit"
               data-testid={FoodstuffSearchResultComponentTestId.AddButton(
                 foodstuff.id
               )}
             >
               <span>追加</span>
             </ButtonComponent>
-          </div>
+          </form>
+          <ErrorMessageComponent message={amountErrorMessage} />
         </div>
       </div>
       {modalIsVisible && (

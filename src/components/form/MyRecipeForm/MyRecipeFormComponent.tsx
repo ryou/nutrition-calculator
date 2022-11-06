@@ -342,8 +342,25 @@ export const MyRecipeFormComponent = ({
   )
 
   return (
-    // TODO: formの場所はここでいい？
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div
+          className={classNames({
+            hidden: mode !== 'recipe',
+          })}
+        >
+          {topErrorMessage.length > 0 && (
+            <div className="mb-8">
+              <AlertComponent type={'error'}>{topErrorMessage}</AlertComponent>
+            </div>
+          )}
+          <MyRecipeEditorComponent
+            recipeItemFields={fields}
+            onClickDelete={onClickDelete}
+            onClickSearch={toSearchResult}
+          />
+        </div>
+      </form>
       {mode === 'search' && (
         <FoodstuffSearchResultComponent
           keyword={filteringKeyword}
@@ -351,22 +368,6 @@ export const MyRecipeFormComponent = ({
           onClickBack={toRecipeDetail}
         />
       )}
-      <div
-        className={classNames({
-          hidden: mode !== 'recipe',
-        })}
-      >
-        {topErrorMessage.length > 0 && (
-          <div className="mb-8">
-            <AlertComponent type={'error'}>{topErrorMessage}</AlertComponent>
-          </div>
-        )}
-        <MyRecipeEditorComponent
-          recipeItemFields={fields}
-          onClickDelete={onClickDelete}
-          onClickSearch={toSearchResult}
-        />
-      </div>
-    </form>
+    </>
   )
 }
