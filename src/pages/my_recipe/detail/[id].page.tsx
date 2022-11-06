@@ -1,21 +1,21 @@
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { useFindMyRecipe } from '../../hooks/recipe/useFindMyRecipe'
-import { pagesPath } from '../../.pathpida/$path'
-import { useUpdateMyRecipe } from '../../hooks/recipe/useUpdateMyRecipe'
-import { AlertComponent } from '../../components/abstract/Alert/AlertComponent'
+import { useFindMyRecipe } from '../../../hooks/recipe/useFindMyRecipe'
+import { pagesPath } from '../../../.pathpida/$path'
+import { useUpdateMyRecipe } from '../../../hooks/recipe/useUpdateMyRecipe'
+import { AlertComponent } from '../../../components/abstract/Alert/AlertComponent'
 import * as z from 'zod'
-import { useQueryParameter } from '../../hooks/useQueryParameter'
-import { MyRecipeFormComponent } from '../../components/form/MyRecipeForm/MyRecipeFormComponent'
-import { MyRecipeFormProvider } from '../../components/form/MyRecipeForm/MyRecipeFormProvider'
-import { useMyRecipeFormContext } from '../../components/form/MyRecipeForm/hooks/useMyRecipeFormContext'
-import { useNetworkFormSubmit } from '../../components/form/hooks/useNetworkFormSubmit'
-import { Recipe } from '../../types/recipe'
-import { MainLayoutComponent } from '../../components/abstract/MainLayout/MainLayoutComponent'
+import { useQueryParameter } from '../../../hooks/useQueryParameter'
+import { MyRecipeFormComponent } from '../../../components/form/MyRecipeForm/MyRecipeFormComponent'
+import { MyRecipeFormProvider } from '../../../components/form/MyRecipeForm/MyRecipeFormProvider'
+import { useMyRecipeFormContext } from '../../../components/form/MyRecipeForm/hooks/useMyRecipeFormContext'
+import { useNetworkFormSubmit } from '../../../components/form/hooks/useNetworkFormSubmit'
+import { Recipe } from '../../../types/recipe'
+import { MainLayoutComponent } from '../../../components/abstract/MainLayout/MainLayoutComponent'
 import {
   convertMyRecipeFormSchemaToRecipeData,
   convertRecipeDataToMyRecipeFormSchema,
-} from '../../components/form/MyRecipeForm/utils'
+} from '../../../components/form/MyRecipeForm/utils'
 
 const FormContentComponent = ({ id }: { id: string }) => {
   const router = useRouter()
@@ -73,7 +73,6 @@ const querySchema = z.object({
   id: z.string(),
 })
 
-export type Query = z.infer<typeof querySchema>
 const MyRecipeDetailPage: NextPage = () => {
   const { data, isError } = useQueryParameter(querySchema)
 
