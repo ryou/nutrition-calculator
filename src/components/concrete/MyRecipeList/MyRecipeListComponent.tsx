@@ -23,11 +23,7 @@ const MyRecipeListItemContentComponent = ({
     <div className="flex justify-between items-center">
       <div>
         <Link
-          href={pagesPath.my_recipe.detail.$url({
-            query: {
-              id: myRecipe.id,
-            },
-          })}
+          href={pagesPath.my_recipe.detail._id(myRecipe.id).$url()}
           passHref
         >
           <TextLinkComponent>{myRecipe.name}</TextLinkComponent>

@@ -96,6 +96,11 @@ test('食材を追加して登録した際に、食材データも反映され�
       const response: ApiResponse.GetFoodstuffs = [food01]
 
       return res(ctx.status(200), ctx.json(response))
+    }),
+    rest.get(MOCK_API_URL.FOODSTUFF, (req, res, ctx) => {
+      const response: ApiResponse.GetFoodstuff = food01
+
+      return res(ctx.status(200), ctx.json(response))
     })
   )
   const inputName = 'sample'
@@ -131,11 +136,7 @@ test('食材を追加して登録した際に、食材データも反映され�
     items: [
       {
         amount: `${food01.unit.amount}`,
-        foodstuff: {
-          id: food01.id,
-          name: food01.name,
-          unit: food01.unit,
-        },
+        foodstuffId: food01.id,
       },
     ],
   })
@@ -156,8 +157,8 @@ test('食材を削除して登録した際に、削除されたことが反映�
     },
   }
   server.use(
-    rest.get(MOCK_API_URL.FOODSTUFFS, (req, res, ctx) => {
-      const response: ApiResponse.GetFoodstuffs = [food01]
+    rest.get(MOCK_API_URL.FOODSTUFF, (req, res, ctx) => {
+      const response: ApiResponse.GetFoodstuff = food01
 
       return res(ctx.status(200), ctx.json(response))
     })
@@ -171,9 +172,7 @@ test('食材を削除して登録した際に、削除されたことが反映�
       items: [
         {
           amount: '100',
-          foodstuff: {
-            ...food01,
-          },
+          foodstuffId: food01.id,
         },
       ],
     },
