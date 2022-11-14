@@ -3,8 +3,8 @@ import { PRIMARY_QUERY_KEY } from '../../config/queryKey'
 import { QUERY_OPTION } from '../../config/queryOption'
 import { FoodstuffRepository } from '../../repositories/FoodstuffRepository'
 import { useCallback, useMemo } from 'react'
-import { includeUndefinedInArray } from '../../../shared/libs/includeUndefinedInArray'
 import { Foodstuff } from '../../types/foodstuff'
+import { noUndefinedInArray } from '../../../shared/libs/noUndefinedInArray'
 
 const findFoodstuff = async (id: string) => {
   const result = await FoodstuffRepository.find(id)
@@ -50,7 +50,7 @@ export const useFindFoodstuffs = (
   const data = useMemo(() => {
     const tmp = queryResults.map((result) => result.data)
 
-    if (includeUndefinedInArray(tmp)) {
+    if (!noUndefinedInArray(tmp)) {
       return undefined
     }
 

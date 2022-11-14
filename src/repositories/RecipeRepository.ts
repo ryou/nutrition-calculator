@@ -6,18 +6,6 @@ import { ApiRequestBody } from '../../shared/types/ApiRequestBody'
 import { HttpResult } from '../types'
 import { RecipeData } from '../types/recipe'
 
-const convertRecipeDataForApi = (data: RecipeData) => {
-  return {
-    name: data.name,
-    items: data.items.map((item) => {
-      return {
-        foodstuffId: item.foodstuff.id,
-        amount: item.amount,
-      }
-    }),
-  }
-}
-
 export const RecipeRepository = {
   async list(): Promise<HttpResult<ApiResponse.GetMyRecipes>> {
     const result = await httpRequest({
@@ -49,7 +37,7 @@ export const RecipeRepository = {
     const result = await httpRequest<ApiRequestBody.PostMyRecipe>({
       method: 'post',
       url: API_URL.getMyRecipesUrl(),
-      data: convertRecipeDataForApi(data),
+      data,
     })
 
     if (result.isFailure()) {
@@ -63,7 +51,7 @@ export const RecipeRepository = {
     const result = await httpRequest<ApiRequestBody.UpdateMyRecipe>({
       method: 'put',
       url: API_URL.getMyRecipeUrl(id),
-      data: convertRecipeDataForApi(data),
+      data,
     })
 
     if (result.isFailure()) {

@@ -1,8 +1,8 @@
 import { RecipeData } from '../../../types/recipe'
 import { MyRecipeFormSchema } from './MyRecipeFormProvider'
 import { castStringToNumber } from '../../../libs/castStringToNumber'
-import { includeUndefinedInArray } from '../../../../shared/libs/includeUndefinedInArray'
 import { Failure, Result, Success } from '../../../../shared/types/Result'
+import { noUndefinedInArray } from '../../../../shared/libs/noUndefinedInArray'
 
 export const convertMyRecipeFormSchemaToRecipeData = (
   formData: MyRecipeFormSchema
@@ -20,7 +20,7 @@ export const convertMyRecipeFormSchemaToRecipeData = (
     }
   })
 
-  if (includeUndefinedInArray(items)) {
+  if (!noUndefinedInArray(items)) {
     return new Failure(
       new Error('amountの文字列から数値の変換に失敗しました。')
     )
@@ -39,7 +39,7 @@ export const convertRecipeDataToMyRecipeFormSchema = (
     ...recipeData,
     items: recipeData.items.map((item) => {
       return {
-        foodstuffId: item.foodstuff.id,
+        foodstuffId: item.foodstuffId,
         amount: `${item.amount}`,
       }
     }),

@@ -44,7 +44,7 @@ export namespace ApiResponse {
     name: z.string(),
     items: z.array(
       z.object({
-        foodstuff: foodstuffSummarySchema,
+        foodstuffId: z.string(),
         amount: z.number(),
       })
     ),
