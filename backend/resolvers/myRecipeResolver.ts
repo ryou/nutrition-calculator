@@ -1,5 +1,5 @@
 import { rest } from 'msw'
-import { foodstuffRepository, myRecipeRepository } from '../singletonFactory'
+import { myRecipeRepository } from '../singletonFactory'
 import {
   badRequestResponse,
   notFoundResponse,
@@ -7,8 +7,17 @@ import {
 import { ApiResponse } from '../../shared/types/ApiResponse'
 import { ApiRequestBody } from '../../shared/types/ApiRequestBody'
 import { successResponse } from '../responses/SuccessResponse'
-import { convertRecipeModelToGetMyRecipeResponse } from '../libs/convertRecipeModelToGetMyRecipeResponse'
 import * as z from 'zod'
+import { RecipeModel } from '../types'
+
+const convertRecipeModelToGetMyRecipeResponse = (
+  recipeModel: RecipeModel
+): ApiResponse.GetMyRecipe => {
+  return {
+    id: recipeModel.id,
+    ...recipeModel.data,
+  }
+}
 
 export const getMyRecipeResolver = (basePath: string) => {
   return [
@@ -56,16 +65,9 @@ export const getMyRecipeResolver = (basePath: string) => {
         return notFoundResponse()
       }
 
-      const convertResult = await convertRecipeModelToGetMyRecipeResponse(
-        recipeModel,
-        foodstuffRepository
-      )
+      const recipe = await convertRecipeModelToGetMyRecipeResponse(recipeModel)
 
-      if (convertResult.isFailure()) {
-        return notFoundResponse()
-      }
-
-      return successResponse(convertResult.value, ApiResponse.getMyRecipeSchema)
+      return successResponse(recipe, ApiResponse.getMyRecipeSchema)
     }),
 
     rest.put(`${basePath}/api/my_recipe/:id`, async (req, res, ctx) => {

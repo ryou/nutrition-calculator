@@ -39,7 +39,7 @@ export const convertRecipeDataToMyRecipeFormSchema = (
     ...recipeData,
     items: recipeData.items.map((item) => {
       return {
-        foodstuffId: item.foodstuff.id,
+        foodstuffId: item.foodstuffId,
         amount: `${item.amount}`,
       }
     }),

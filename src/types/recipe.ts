@@ -1,7 +1,5 @@
-import { FoodstuffSummary } from './foodstuff'
-
 export type RecipeItem = {
-  foodstuff: FoodstuffSummary
+  foodstuffId: string
   amount: number
 }
 
