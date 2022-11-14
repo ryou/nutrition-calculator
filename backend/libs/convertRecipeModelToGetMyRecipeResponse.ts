@@ -1,8 +1,8 @@
 import { RecipeModel } from '../types'
 import { ApiResponse } from '../../shared/types/ApiResponse'
 import { IFoodstuffRepository } from '../repositories/FoodstuffRepository/IFoodstuffRepository'
-import { includeUndefinedInArray } from '../../shared/libs/includeUndefinedInArray'
 import { Failure, Result, Success } from '../../shared/types/Result'
+import { noUndefinedInArray } from '../../shared/libs/noUndefinedInArray'
 
 export const convertRecipeModelToGetMyRecipeResponse = async (
   recipeModel: RecipeModel,
@@ -26,7 +26,7 @@ export const convertRecipeModelToGetMyRecipeResponse = async (
     })
   )
 
-  if (includeUndefinedInArray(items)) {
+  if (!noUndefinedInArray(items)) {
     return new Failure(new Error('データにない食材がしていされました。'))
   }
 
